@@ -1,0 +1,8 @@
+@import "../../../../assets/style/colors";
+@import "../../../../assets/style/buttons";
+
+.ce-btn {
+  button {
+    @extend %main-btn;
+  }
+}

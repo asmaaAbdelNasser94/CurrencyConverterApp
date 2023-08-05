@@ -1,0 +1,33 @@
+@import "/src/assets/style/colors";
+@import "/src/assets/style/buttons";
+
+nav {
+  background-color: $headerColor !important;
+  height: 80px;
+
+  .navbar-brand {
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.241);
+  }
+
+  .nav-link {
+    padding: 0px;
+  }
+
+  .nav-item {
+    @extend %main-btn;
+  }
+}
+@media only screen and (max-width: 767px) {
+  nav{
+    .navbar-nav{
+      background-color: $textColor;
+      width: 50%;
+      padding: 15px;
+      border-radius: 3px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      -ms-border-radius: 3px;
+      -o-border-radius: 3px;
+}
+  }
+}

@@ -1,0 +1,14 @@
+<div class="chart mt-4">
+  <h2 class="mb-3">{{current}} Analysis</h2>
+  <div *ngIf="rates.length == 12" class="bg-white p-md-3 p-0 rounded-1">
+    <ejs-chart [primaryXAxis]="xAxis" [primaryYAxis]="yAxis" [title]="chartTitle" [legendSettings]="legend"
+      [tooltip]="tooltipSettings">
+      <e-series-collection>
+        <e-series type="Line" [dataSource]="rates" xName="month" yName="rate" name="Rates" [marker]="markerSettings">
+        </e-series>
+      </e-series-collection>
+    </ejs-chart>
+  </div>
+</div>
+<ngx-http-loader [loader]="loader.GRID" [iconColor]="'#2666CF'" [title]="'Currency
+  Exchanger'" [titleColor]="'white'" [titleSize]="'30px'"></ngx-http-loader>

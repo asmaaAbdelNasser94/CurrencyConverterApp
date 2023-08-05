@@ -1,0 +1,17 @@
+@import "../src/assets/style/colors";
+
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: $bodyColor;
+  color: $textColor ;
+  background-image: url(../src/assets/imgs/overlay7.png);
+}
+
+a {
+  color: $textColor !important;
+  text-decoration: none;
+}
+
+p {
+  margin: 0;
+}

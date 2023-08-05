@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-between align-items-center">
+  <div class="ce-name">
+    <h2>{{current}} - {{fullName}}</h2>
+  </div>
+  <div class="ce-btn">
+    <button class="home-btn m-0">
+      <a routerLink="/home">Back to home</a>
+    </button>
+  </div>
+</div>
+<app-convert-panel [amount]="amount" [current]="current" [desired]="desired" [isHidden]="true" [disable]="false"
+  [isHome]="false" [currentRate]="currentRate" [desiredRate]="desiredRate"></app-convert-panel>
+<hr>
+<app-currency-chart [current]="current" [desired]="desired"></app-currency-chart>
+<ngx-http-loader [loader]="loader.GRID" [iconColor]="'#2666CF'" [title]="'Currency
+  Exchanger'" [titleColor]="'white'" [titleSize]="'30px'"></ngx-http-loader>

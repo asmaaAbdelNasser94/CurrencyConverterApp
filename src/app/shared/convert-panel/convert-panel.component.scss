@@ -1,0 +1,76 @@
+@import "../../../assets/style/colors";
+@import "../../../assets/style/buttons";
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input {
+  &:focus {
+    background-color: transparent;
+    color: $textColor;
+  }
+}
+
+select,
+input {
+  background-color: transparent;
+  color: $textColor;
+
+  &:disabled {
+    background-color: rgba(255, 255, 255, 0.336);
+    color: #ccc;
+  }
+}
+
+.ce-panel {
+  .ce-currency {
+    width: 40%;
+  }
+
+  .material-symbols-outlined {
+    font-size: 35px;
+  }
+
+  .ce-btn {
+    button {
+      &:disabled {
+        background-color: rgba(255, 255, 255, 0.336);
+        color: #ccc;
+        border-color: rgba(255, 255, 255, 0.336);
+      }
+
+      width: 100%;
+      margin: 18px 0;
+      @extend %main-btn;
+    }
+  }
+
+  .ce-result,
+  .ce-unit {
+    text-align: center;
+  }
+
+  .ce-result {
+    text-align: center;
+    padding: 18px 0;
+
+    span {
+      font-size: 22px;
+    }
+  }
+
+}
+
+#swap-btn {
+  span {
+    color: $mainColor;
+  }
+
+  &:disabled {
+    span {
+      color: rgba(255, 255, 255, 0.336) !important;
+    }
+  }
+}
