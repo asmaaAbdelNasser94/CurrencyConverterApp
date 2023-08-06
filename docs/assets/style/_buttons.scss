@@ -1,0 +1,12 @@
+@import "../style/colors";
+%main-btn {
+  background-color: $mainColor;
+  color: $textColor;
+  padding: 5px 8px;
+  border: 1px solid $mainColor;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}

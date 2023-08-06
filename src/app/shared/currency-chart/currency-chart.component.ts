@@ -28,7 +28,6 @@ export class CurrencyChartComponent {
       { month: 'Nov', id: "11" }, { month: 'Dec', id: "12" }
     ]
   rates: object[] = [];
-  desiredRate!: any;
   lastDay: number[] = [];
   currentRateMonth! : number;
   desiredRateMonth! : number
@@ -65,7 +64,6 @@ export class CurrencyChartComponent {
 
   ngOnInit(): void {
     this.chartTitle = `(${this.current} - ${this.desired}) Currency Analysis 2022`;
-    this.desiredRate = localStorage.getItem('desiredRate');
     this.getLastDay();
     this.getHistory();
   }
@@ -86,8 +84,6 @@ export class CurrencyChartComponent {
           month: item.month,
           rate: +((1 / this.currentRateMonth) / (1 / this.desiredRateMonth)).toFixed(5)
         })
-
-        // console.log(this.rates);
       })
     })
   }
