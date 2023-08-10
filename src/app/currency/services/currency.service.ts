@@ -27,7 +27,4 @@ export class CurrencyService {
   getHistoricalRates(month: string, symbol1: string, symbol2: string , day : string) : Observable<any> {
     return this._HttpClient.get(`${this.url}2022-${month}-${day}?access_key=${this.apiKey}&symbols=${symbol1},${symbol2}`)
   }
-  getHistoricalRates2(month: string, symbol1: string, symbol2 : string , day : string) : Observable<any> {
-    return this._HttpClient.get(`${this.url}2022-${month}-${day}?access_key=${this.apiKey}&symbols=${symbol1},${symbol2}`)
-  }
 }
