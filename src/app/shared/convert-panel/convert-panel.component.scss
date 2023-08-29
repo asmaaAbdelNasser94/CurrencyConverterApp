@@ -63,10 +63,13 @@ input {
 
 }
 
-#swap-btn {
-  span {
+#swap-btn , .arrow-btn{
+span {
     color: $mainColor;
   }
+}
+#swap-btn {
+
 
   &:disabled {
     span {

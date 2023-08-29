@@ -8,37 +8,43 @@
       </div>
     </div>
     <div class="col-md-8">
-      <div class="d-flex align-items-center justify-content-between">
-        <div class="ce-currency">
-          <label for="currency" class="mb-1 ms-1">From</label>
-          <select #val1 class="form-select" id="s1" name="currency" [disabled]="disableCurrent"
-            (change)="getCurrentRate(val1.value)">
-            <option *ngFor="let currency of currencies" [value]="currency" [selected]="currency == current">{{currency}}
-            </option>
-          </select>
-        </div>
-        <div class="align-self-end">
-          <button (click)="swapCurrencies()" id="swap-btn" [disabled]="disableCurrent"
-            class="bg-transparent border-0 text-white d-flex align-items-center">
-            <span class="material-symbols-outlined">
-              swap_horiz
-            </span>
-          </button>
+      <!-- From -->
+      <form [formGroup]="currencyForm">
+          <div class="d-flex align-items-center justify-content-between">
+          <div class="ce-currency">
+            <label for="currency" class="mb-1 ms-1">From</label>
+            <select formControlName="fromCurrency" #val1 class="form-select" id="s1" name="currency"
+              (change)="getCurrentRate(val1.value)">
+              <option *ngFor="let currency of currencies" [value]="currency">{{currency}}
+              </option>
+            </select>
+          </div>
+          <div class="align-self-end">
+            <button *ngIf="isHome" (click)="swapCurrencies()" id="swap-btn" [disabled]="disable"
+              class="bg-transparent border-0 text-white d-flex align-items-center">
+              <span class="material-symbols-outlined">
+                swap_horiz
+              </span>
+            </button>
+            <button *ngIf="!isHome"
+              class="arrow-btn bg-transparent border-0 text-white d-flex align-items-center">
+              <span class="material-symbols-outlined">
+                east
+              </span>
+            </button>
 
+          </div>
+          <div class="ce-currency">
+            <label for="currency" class="mb-1 ms-1">To</label>
+            <select formControlName="toCurrency" #val2 class="form-select" name="currency" (change)="getdesiredRate(val2.value)">
+              <option *ngFor="let currency of currencies" [value]="currency" >{{currency}}</option>
+            </select>
+          </div>
         </div>
-        <div class="ce-currency">
-          <label for="currency" class="mb-1 ms-1">To</label>
-          <select #val2 id="s2" class="form-select" [disabled]="disable" name="currency"
-            (change)="getdesiredRate(val2.value)">
-            <option *ngFor="let currency of currencies" [value]="currency" [selected]="currency == desired">{{currency}}
-            </option>
-          </select>
+        <div class="ce-btn">
+          <button type="submit" (click)="convertProcess()" [disabled]="disable" class="convert-btn">Convert</button>
         </div>
-      </div>
-      <div class="ce-btn">
-        <button (click)="convertProcess()" [disabled]="disable" class="convert-btn">Convert</button>
-      </div>
-
+        </form>
     </div>
   </div>
   <hr *ngIf="convertedResult">
@@ -46,17 +52,17 @@
     <div class="row align-items-center">
       <div class="col-md-4">
         <div class="ce-unit border rounded-1 p-2 my-3 my-md-0">
-          <span>1.00 {{baseVal}} = {{desiredResult | number:'1.0-5'}} {{convertedVal}}</span>
+          <span>1.00 {{current}} = {{desiredResult | number:'1.0-5'}} {{desired}}</span>
         </div>
       </div>
       <div class="col-md-8">
         <div class="row align-items-center">
-          <div [ngClass]="{'col-md-8' : !isHidden}">
+          <div [ngClass]="{'col-md-8' : isHome}">
             <div class="ce-result border rounded-1">
-              <span>{{convertedResult | number:'1.0-5'}} {{convertedVal}}</span>
+              <span>{{convertedResult | number:'1.0-5'}} {{desired}}</span>
             </div>
           </div>
-          <div *ngIf="!isHidden" class="col-md-4">
+          <div *ngIf="isHome" class="col-md-4">
             <div class="ce-btn mt-3 mt-md-0">
               <a [routerLink]="['/details']" [queryParams]="{from : current , to : desired}">
                 <button [disabled]="disable" class="details-btn m-0">

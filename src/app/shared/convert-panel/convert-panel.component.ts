@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxLoader } from 'ngx-http-loader';
 import { CurrencyService } from 'src/app/currency/services/currency.service';
-
-declare var $: any;
 @Component({
   selector: 'app-convert-panel',
   templateUrl: './convert-panel.component.html',
@@ -17,17 +16,18 @@ export class ConvertPanelComponent {
   @Input() desired: string = 'USD';
   @Input() disable: boolean = true;
   @Input() isHome: boolean = true;
-  @Input() isHidden : boolean = false;
   @Input() currentRate!: number;
   @Input() desiredRate!: number;
-  disableCurrent: boolean = true;
   convertedResult!: number;
   desiredResult!: number;
-  baseVal: string = 'EUR';
-  convertedVal: string = 'USD';
   currencies: string[] = [];
   currenciesRates: any;
   baseEuroRate: number = 1;
+  currencyForm: FormGroup = new FormGroup({
+    fromCurrency: new FormControl({ value: this.current, disabled: true }),
+    toCurrency: new FormControl({ value: this.desired, disabled: true })
+  })
+  popularRates: {}[] = [];
   popularCurrencies: string[] = [
     'USD',
     'AUD',
@@ -39,14 +39,16 @@ export class ConvertPanelComponent {
     'NZD',
     'ZAR'
   ]
-  popularRates: {}[] = [];
-  constructor(private _CurrencyService: CurrencyService ,
-    private _Router: Router, private _ActivatedRoute : ActivatedRoute) { }
+  constructor(private _CurrencyService: CurrencyService,
+    private _Router: Router, private _ActivatedRoute: ActivatedRoute) { }
   ngOnInit(): void {
     this.getCurrencies();
   }
   ngOnChanges(changes: SimpleChanges) {
     if (!this.isHome) {
+      this.currencyForm.controls['toCurrency'].enable();
+      this.currencyForm.controls['fromCurrency'].setValue(this.current);
+      this.currencyForm.controls['toCurrency'].setValue(this.desired);
       this.convertProcess();
     }
   }
@@ -54,9 +56,9 @@ export class ConvertPanelComponent {
   getCurrencies(): void {
     this._CurrencyService.getCurrency().subscribe((res) => {
       this.currenciesRates = res.rates;
-        for (const key in this.currenciesRates) {
-          this.currencies.push(key);
-          if (this.isHome) {
+      for (const key in this.currenciesRates) {
+        this.currencies.push(key);
+        if (this.isHome) {
           if (key == 'EUR') {
             this.currentRate = this.currenciesRates[key];
           }
@@ -71,15 +73,16 @@ export class ConvertPanelComponent {
   onAmountChange(): void {
     if (this.amount !== null && this.amount !== undefined) {
       this.disable = false;
+      this.currencyForm.enable();
       localStorage.setItem('amount', JSON.stringify(this.amount));
-      if(this.isHome){
-        this.disableCurrent = false;
-      }else{
-        this.disableCurrent = true;
+      if (this.isHome) {
+        this.currencyForm.controls['fromCurrency'].enable();
+      } else {
+        this.currencyForm.controls['fromCurrency'].disable();
       }
     } else {
       this.disable = true;
-      this.disableCurrent = true;
+      this.currencyForm.disable();
       this.convertedResult = 0;
       this.PopularConversions.emit();
     }
@@ -87,12 +90,14 @@ export class ConvertPanelComponent {
   }
   // swap between exists currencies
   swapCurrencies(): void {
-    const firstSelection = $('#s1').val();
-    const secondSelection = $('#s2').val();
-    $('#s1').val(secondSelection);
-    $('#s2').val(firstSelection);
-    this.current = secondSelection;
-    this.desired = firstSelection;
+    //EURO => USD
+    //USD => USD
+    const current = this.currencyForm.controls['fromCurrency'].value;
+    const desierd = this.currencyForm.controls['toCurrency'].value;
+    this.currencyForm.controls['fromCurrency'].setValue(desierd)
+    this.currencyForm.controls['toCurrency'].setValue(current)
+    this.current = desierd;
+    this.desired = current;
     for (const key in this.currenciesRates) {
       if (key == this.current) {
         this.currentRate = this.currenciesRates[key];
@@ -109,7 +114,7 @@ export class ConvertPanelComponent {
   // Get rate for the current currency
   getCurrentRate(value: any) {
     this.current = value;
-    this._CurrencyService.getRate(this.current).subscribe((res)=>{
+    this._CurrencyService.getRate(this.current).subscribe((res) => {
       this.currentRate = res.rates[this.current];
     })
   }
@@ -119,7 +124,7 @@ export class ConvertPanelComponent {
     this._CurrencyService.getRate(this.desired).subscribe((res) => {
       this.desiredRate = res.rates[this.desired];
     })
-    if(!this.isHome){
+    if (!this.isHome) {
       this._Router.navigate(
         [],
         {
@@ -131,11 +136,12 @@ export class ConvertPanelComponent {
   }
 
   convertProcess() {
-    this.baseVal = this.current;
-    this.convertedVal = this.desired;
+
     this.desiredResult = ((this.baseEuroRate / this.currentRate) / (this.baseEuroRate / this.desiredRate));
     this.convertedResult = this.desiredResult * this.amount;
     this.PopularProcess(this.currentRate);
+    console.log(this.currencyForm.value);
+
   }
   // convert process for most 9 popular currencies
   PopularProcess(from: number) {
@@ -147,7 +153,7 @@ export class ConvertPanelComponent {
           const desired = ((this.baseEuroRate / from) / (this.baseEuroRate / to));
           const popularResult = desired * this.amount;
           this.popularRates.push({
-            baseCru: this.baseVal,
+            baseCru: this.current,
             popularCur: currency,
             rate: desired,
             convertedRes: popularResult

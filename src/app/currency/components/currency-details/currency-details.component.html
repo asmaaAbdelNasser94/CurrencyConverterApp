@@ -8,9 +8,8 @@
     </button>
   </div>
 </div>
-<app-convert-panel [amount]="amount" [current]="current" [desired]="desired" [isHidden]="true" [disable]="false"
+<app-convert-panel [amount]="amount" [current]="current" [desired]="desired" [disable]="false"
   [isHome]="false" [currentRate]="currentRate" [desiredRate]="desiredRate"></app-convert-panel>
 <hr>
 <app-currency-chart [current]="current" [desired]="desired"></app-currency-chart>
-<ngx-http-loader [loader]="loader.GRID" [iconColor]="'#2666CF'" [title]="'Currency
-  Exchanger'" [titleColor]="'white'" [titleSize]="'30px'"></ngx-http-loader>
+<ngx-http-loader [loader]="loader.GRID" [iconColor]="'#2666CF'" [title]="'Currency Exchanger'" [titleColor]="'white'" [titleSize]="'30px'"></ngx-http-loader>
