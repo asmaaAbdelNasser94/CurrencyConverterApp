@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CurrencyService {
   url: string = 'http://data.fixer.io/api/';
-  apiKey: string = 'f79e0b5eb287a6dd91bb43d8bb09600c';
+  apiKey: string = 'ff8d928f69557cd6598acc0b89436286';
   constructor(private _HttpClient: HttpClient) { }
 
   // Get all currencies
